@@ -5,7 +5,11 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RoleSeeder;
+use Spatie\Permission\Models\Role;
+use Database\Seeders\EmployeeSeeder;
 use Illuminate\Support\Facades\Hash;
+use Database\Seeders\PermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,12 +25,21 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::updateOrCreate(
+
+        $this->call([
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            EmployeeSeeder::class
+        ]);
+
+        $admin = User::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('admin123')
             ]
         );
+        $admin->assignRole('Admin');
+
     }
 }

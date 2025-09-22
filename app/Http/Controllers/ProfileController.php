@@ -57,4 +57,18 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    
+    public function showEmployeeProfile()
+    {
+        $user = Auth::user();
+
+        $employee = $user->employee;
+
+        if (!$employee) {
+            abort(404, 'Employee profile not found.');
+        }
+
+        return view('employees.show', compact('employee'));
+    }
+
 }
